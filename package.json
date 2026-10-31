@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "create-admin": "node scripts/createAdmin.js"
-},
+    "create-admin": "node scripts/createAdmin.js",
+    "test": "cross-env NODE_ENV=test jest --runInBand"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -23,7 +24,14 @@
     "mongoose": "^9.11.4"
   },
   "devDependencies": {
-    "nodemon": "^1.0.2"
-  }
-  
+    "cross-env": "^10.1.0",
+    "jest": "^30.5.2",
+    "nodemon": "^1.0.2",
+    "supertest": "^7.3.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+    "testTimeout": 20000
+}
 }
