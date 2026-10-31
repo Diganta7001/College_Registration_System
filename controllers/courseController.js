@@ -75,33 +75,41 @@ exports.addCourse = async (req, res) => {
 // Update course
 exports.updateCourse = async (req, res) => {
     try {
-        const {
-            title,
-            description,
-            credits,
-            capacity,
-            semester
-        } = req.body;
+        const { title, description, credits, capacity, semester } = req.body;
 
         const course = await Course.findById(req.params.id);
 
         if (!course) {
-            return res.status(404).send("Course not found.");
+            return res.status(404).send("Course not found");
         }
 
-        if (title !== undefined) course.title = title;
-        if (description !== undefined) course.description = description;
-        if (credits !== undefined) course.credits = credits;
-        if (capacity !== undefined) course.capacity = capacity;
-        if (semester !== undefined) course.semester = semester;
+        if (!title || !credits || !capacity || !semester) {
+            return res.status(400).send("Required fields cannot be empty");
+        }
+
+        const currentRegistrations = await Registration.countDocuments({
+            course: course._id
+        });
+
+        if (Number(capacity) < currentRegistrations) {
+            return res.status(400).send(
+                `Capacity cannot be less than existing registrations (${currentRegistrations})`
+            );
+        }
+
+        course.title = title.trim();
+        course.description = description || "";
+        course.credits = Number(credits);
+        course.capacity = Number(capacity);
+        course.semester = semester.trim();
 
         await course.save();
 
         res.redirect("/admin/courses");
 
     } catch (error) {
-        console.error(error);
-        res.status(500).send("Unable to update course.");
+        console.error("Course update error:", error);
+        res.status(500).send("Unable to update course");
     }
 };
 
