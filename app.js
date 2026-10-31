@@ -13,6 +13,7 @@ const authRoutes = require("./routes/authRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 
+
 const app = express();
 
 // Connect to MongoDB

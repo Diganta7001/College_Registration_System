@@ -1,22 +1,48 @@
-
 const express = require("express");
 const router = express.Router();
 
+const adminController = require("../controllers/adminController");
 const courseController = require("../controllers/courseController");
+
 const { isAdmin } = require("../middleware/auth");
 
-// Admin dashboard
-router.get("/dashboard", isAdmin, (req, res) => {
-    res.render("admin/dashboard");
-});
+// Dashboard
+router.get(
+    "/dashboard",
+    isAdmin,
+    adminController.getDashboard
+);
 
 // Course management
-router.get("/courses", isAdmin, courseController.getAdminCourses);
+router.get(
+    "/courses",
+    isAdmin,
+    courseController.getAdminCourses
+);
 
-router.post("/courses", isAdmin, courseController.addCourse);
+router.post(
+    "/courses",
+    isAdmin,
+    courseController.addCourse
+);
 
-router.put("/courses/:id", isAdmin, courseController.updateCourse);
+router.put(
+    "/courses/:id",
+    isAdmin,
+    courseController.updateCourse
+);
 
-router.delete("/courses/:id", isAdmin, courseController.deleteCourse);
+router.delete(
+    "/courses/:id",
+    isAdmin,
+    courseController.deleteCourse
+);
+
+// View registrations
+router.get(
+    "/registrations",
+    isAdmin,
+    adminController.getRegistrations
+);
 
 module.exports = router;
