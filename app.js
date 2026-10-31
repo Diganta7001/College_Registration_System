@@ -12,7 +12,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const courseRoutes = require("./routes/courseRoutes");
 const adminRoutes = require("./routes/adminRoutes");
-
+const studentRoutes = require("./routes/studentRoutes");
 
 const app = express();
 
@@ -56,6 +56,7 @@ app.use((req, res, next) => {
 app.use("/auth", authRoutes);
 app.use("/courses", courseRoutes);
 app.use("/admin", adminRoutes);
+app.use("/student", studentRoutes);
 // Home route
 app.get("/", (req, res) => {
     res.send("College Course Registration System is running!");
